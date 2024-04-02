@@ -1,37 +1,53 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.DetektCreateBaselineTask
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-plugins {
-id 'com.android.application' version '8.2.2' apply false
-    id "io.gitlab.arturbosch.detekt" version "1.23.6"
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+    dependencies {
+        classpath "com.android.tools.build:gradle:8.2.2"
+    }
 }
 
+plugins {
+    id 'com.android.application' version '8.2.2' apply false
+    id 'io.gitlab.arturbosch.detekt' version '1.23.5'
+    //id 'org.jlleitschuh.gradle.ktlint' version '10.1.0'
+}
 
+//repositories {
+//    mavenCentral()
+//}
 
 detekt {
+    toolVersion = '1.23.5'
     buildUponDefaultConfig = true // preconfigure defaults
     allRules = false // activate all available (even unstable) rules.
     config.setFrom("$projectDir/config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
     baseline = file("$projectDir/config/baseline.xml") // a way of suppressing issues before introducing detekt
 }
 
-//tasks.withType<Detekt>().configureEach {
-//    reports {
-//        html.required.set(true) // observe findings in your browser with structure and code snippets
-//        xml.required.set(true) // checkstyle like format mainly for integrations like Jenkins
-//        txt.required.set(true) // similar to the console output, contains issue signature to manually edit baseline files
-//        sarif.required.set(true) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
-//        md.required.set(true) // simple Markdown format
-//    }
-//}
+tasks.withType(Detekt).configureEach {
+    reports {
+        html.required.set(true) // observe findings in your browser with structure and code snippets
+        xml.required.set(true) // checkstyle like format mainly for integrations like Jenkins
+        txt.required.set(true) // similar to the console output, contains issue signature to manually edit baseline files
+        sarif.required.set(true) // standardized SARIF format (https://sarifweb.azurewebsites.net/) to support integrations with GitHub Code Scanning
+        md.required.set(true) // simple Markdown format
+    }
+}
 
 // Groovy DSL
-//tasks.withType<Detekt>().configureEach {
-//    jvmTarget = "1.8"
-//}
-//tasks.withType<DetektCreateBaselineTask>.configureEach {
-//    jvmTarget = "1.8"
-//}
+tasks.withType(Detekt).configureEach {
+    jvmTarget = "1.8"
+}
+tasks.withType(DetektCreateBaselineTask).configureEach {
+    jvmTarget = "1.8"
+}
 tasks.register("copyGitHooks", Copy.class) {
     description = "Copies the git hooks from /git-hooks to the .git folder."
     group = "git hooks"
@@ -49,3 +65,4 @@ tasks.register("installGitHooks", Exec.class) {
         logger.info("Git hook installed successfully.")
     }
 }
+
