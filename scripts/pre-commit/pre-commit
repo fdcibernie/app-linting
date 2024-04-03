@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 echo "
 ===============
 |  Running detekt...
@@ -26,7 +25,8 @@ echo "
 ===================
 "
 
-./gradlew --no-daemon --stacktrace -PdisablePreDex ktlintCheck
+#./gradlew --no-daemon --stacktrace -PdisablePreDex ktlintCheck
+./gradlew lintDebug
 
 checkStyleStatus=$?
 
