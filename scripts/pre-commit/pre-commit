@@ -29,11 +29,12 @@ echo "
 
 checkStyleStatus=$?
 
-# return 1 exit code if running checks fails
-[ $checkStyleStatus -ne 0 ] && exit 1
-exit 0
 echo "
 ========================
 |  End Lint Checking...
 ========================
 "
+
+# return 1 exit code if running checks fails
+[ $checkStyleStatus -ne 0 ] && exit 1
+exit 0
