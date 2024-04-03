@@ -4,7 +4,6 @@ echo "
 |  Running detekt...
 ===============
 "
-
 ./gradlew --no-daemon --stacktrace -PdisablePreDex detekt
 
 detektStatus=$?
@@ -25,8 +24,8 @@ echo "
 ===================
 "
 
-#./gradlew --no-daemon --stacktrace -PdisablePreDex ktlintCheck
-./gradlew lintDebug
+./gradlew --no-daemon --stacktrace -PdisablePreDex ktlintCheck
+
 
 checkStyleStatus=$?
 
