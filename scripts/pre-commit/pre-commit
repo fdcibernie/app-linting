@@ -19,11 +19,11 @@
 #./gradlew ktlintFormat
 
 echo "
-===================
+=========================
 |  Running Lint Check...
-===================
+=========================
 "
-./gradlew lintDebug
+./gradlew :app:lintDebug
 #./gradlew --no-daemon --stacktrace -PdisablePreDex ktlintCheck
 
 
@@ -32,3 +32,8 @@ checkStyleStatus=$?
 # return 1 exit code if running checks fails
 [ $checkStyleStatus -ne 0 ] && exit 1
 exit 0
+echo "
+========================
+|  End Lint Checking...
+========================
+"
