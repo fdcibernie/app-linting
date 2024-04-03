@@ -10,6 +10,18 @@ android {
     namespace 'com.example.applinting'
     compileSdk 34
 
+    lintOptions{
+
+        // If set to true (default), stops the build if errors are found.
+        abortOnError true
+        // If set to true, lint also checks all dependencies as part of its analysis.
+        // Recommended for projects consisting of an app with library dependencies.
+        checkDependencies false
+        ignoreTestSources true
+        warningsAsErrors true
+        baseline file("lint-baseline.xml")
+    }
+
     defaultConfig {
         applicationId "com.example.applinting"
         minSdk 26
