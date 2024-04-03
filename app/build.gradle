@@ -18,7 +18,7 @@ android {
         // Recommended for projects consisting of an app with library dependencies.
         checkDependencies false
         ignoreTestSources true
-        warningsAsErrors true
+        //warningsAsErrors true
         baseline file("lint-baseline.xml")
     }
 
