@@ -29,10 +29,13 @@ jobs:
           path: app/build/reports/app-lint-report.html
 
       - name: create-status-check
-        uses: billyjbryant/create-status-check@v2
+        uses: unacast/actions-github-deployment-status@0.4.0
         with:
-         authToken: ${{ secrets.GITHUB_TOKEN }}
-         status: "success"
+          # The GITHUB_TOKEN secret
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # The status to create. Can be one of error, failure, inactive, in_progress, queued pending, or success
+          status: success
+        
 
 
 
