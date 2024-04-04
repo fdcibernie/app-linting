@@ -31,9 +31,8 @@ jobs:
       - name: create-status-check
         uses: billyjbryant/create-status-check@v2
         with:
-         authToken:
-            # The status of the check: success, error, failure or pending
-          state: success
+         authToken: ${{ secrets.GITHUB_TOKEN }}
+         state: "success"
 
 
 
