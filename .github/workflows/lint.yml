@@ -32,7 +32,7 @@ jobs:
         uses: billyjbryant/create-status-check@v2
         with:
           name: "Your status check name"
-          status: success  # Set the status to 'success'
+          state: success  # Set the status to 'success'
           conclusion: success  # Set the conclusion to 'success'
           description: "Your status check description"
           token: ${{ secrets.GITHUB_TOKEN }}
