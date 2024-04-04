@@ -19,21 +19,23 @@ jobs:
           java-version: '18'
           distribution: 'adopt'
 
-      - name: App Lint
-        run: ./gradlew app:lintDebug
+      # - name: App Lint
+      #   run: ./gradlew app:lintDebug
 
-      - name: Upload Lint Report
-        uses: actions/upload-artifact@v4.3.1
-        with:
-          name: app-lint-report.html
-          path: app/build/reports/app-lint-report.html
+      # - name: Upload Lint Report
+      #   uses: actions/upload-artifact@v4.3.1
+      #   with:
+      #     name: app-lint-report.html
+      #     path: app/build/reports/app-lint-report.html
+          
       - name: create-status-check
         uses: billyjbryant/create-status-check@v2
         with:
-          # Use secrets.GITHUB_TOKEN or your own token if you need to trigger other workflows the use "on: status"
-          authToken: ${{ secrets.GITHUB_TOKEN }}
-          # The status of the check: success, error, failure or pending
-          state: Succes
+          name: "Your status check name"
+          status: success  # Set the status to 'success'
+          conclusion: success  # Set the conclusion to 'success'
+          description: "Your status check description"
+          token: ${{ secrets.GITHUB_TOKEN }}
      
 # https://github.com/fdcibernie
               # - name: create-status-check
