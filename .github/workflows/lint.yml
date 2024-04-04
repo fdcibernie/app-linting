@@ -32,7 +32,7 @@ jobs:
         uses: billyjbryant/create-status-check@v2
         with:
          authToken: ${{ secrets.GITHUB_TOKEN }}
-         state: "success"
+         state: success
 
 
 
