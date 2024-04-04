@@ -1,0 +1,57 @@
+name: Android NC Build
+on:
+  push :
+    branches : [ v2 ]
+  pull_request:
+    branches : [ v2 ]
+
+
+jobs:
+  build:
+    runs-on : ubuntu-latest
+    steps:
+      - name : Checkout
+        uses: actions/checkout@v4.1.2
+
+      - name : Setup Java JDK
+        uses: actions/setup-java@v4.2.1
+        with:
+          java-version: '18'
+          distribution: 'adopt'
+
+      - name: App Lint
+        run: ./gradlew app:lintDebug
+
+      - name: Upload Lint Report
+        uses: actions/upload-artifact@v4.3.1
+        with:
+         name: app-lint-report.html
+         path: app/build/reports/app-lint-report.html
+          
+#      - name: create-status-check
+#        uses: billyjbryant/create-status-check@v2
+#        with:
+#          name: "Your status check name"
+#          state: 'success'  # Set the status to 'success'
+#          conclusion: success  # Set the conclusion to 'success'
+#          description: "Your status check description"
+#          token: ${{ secrets.GITHUB_TOKEN }}
+     
+# https://github.com/fdcibernie
+              # - name: create-status-check
+      #   uses: unacast/actions-github-deployment-status@0.4.0
+      #   with:
+      #     # The GITHUB_TOKEN secret
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     # The status to create. Can be one of error, failure, inactive, in_progress, queued pending, or success
+      #     status: success
+        
+
+#      - name : Build with Gradle
+#        run: ./gradlew assembleDebug
+#
+#      - name : Upload a Build Artifact
+#        uses: actions/upload-artifact@v4.3.1
+#        with:
+#          name: MiniProject.apk
+#          path: app/build/outputs/apk/debug/app-debug.apk
