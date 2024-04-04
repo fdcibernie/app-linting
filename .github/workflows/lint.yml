@@ -28,37 +28,39 @@ jobs:
           name: app-lint-report.html
           path: app/build/reports/app-lint-report.html
 
-      - name: create-status-check
-        uses: unacast/actions-github-deployment-status@0.4.0
-        with:
-          # The GITHUB_TOKEN secret
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          # The status to create. Can be one of error, failure, inactive, in_progress, queued pending, or success
-          status: success
+      - name: Update status check
+        env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          run:|
+            response=$(curl --request POST \
+              --url "https://github.com/fdcibernie/${{ github.repository }}/check-runs" \
+              --header "Authorization:Bearer $GITHUB_TOKEN" \
+              --header 'Accept:application/vnd.github.v3+json' \
+              --header 'Content-Type:application/json' \
+              --data '{
+                "name":"Your status check name",
+                "head_sha":"${{ github.sha }}",
+                "status":"completed",
+                "conclusion":"${{ job.status }}",
+                "output":{
+                  "title":"Your status check title",
+                  "summary":"Your status check summary"
+                }
+              }')
         
-
-
-
-
-#      - name: Update status check
-#        env:
-#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          run: |
-#            curl --request POST \
-#              --url 'https://api.github.com/repos/${{ github.repository }}/check-runs' \
-#              --header "Authorization: Bearer $GITHUB_TOKEN" \
-#              --header 'Accept: application/vnd.github.v3+json' \
-#              --header 'Content-Type: application/json' \
-#              --data '{
-#                "name": "Your status check name",
-#                "head_sha": "${{ github.sha }}",
-#                "status": "completed",
-#                "conclusion": "${{ job.status }}",
-#                "output": {
-#                  "title": "Your status check title",
-#                  "summary": "Your status check summary"
-#                }
-#              }'
+            if [[ $(echo "$response" | jq -r .message) != null ]]; then
+              echo "Error setting status:$(echo "$response" | jq -r .message)"
+              exit 1
+            fi
+# https://github.com/fdcibernie
+              # - name: create-status-check
+      #   uses: unacast/actions-github-deployment-status@0.4.0
+      #   with:
+      #     # The GITHUB_TOKEN secret
+      #     github_token: ${{ secrets.GITHUB_TOKEN }}
+      #     # The status to create. Can be one of error, failure, inactive, in_progress, queued pending, or success
+      #     status: success
+        
 
 #      - name : Build with Gradle
 #        run: ./gradlew assembleDebug
