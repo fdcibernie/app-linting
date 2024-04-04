@@ -27,31 +27,14 @@ jobs:
         with:
           name: app-lint-report.html
           path: app/build/reports/app-lint-report.html
-
-      - name: Update status check
-        env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run:|
-            response=$(curl --request POST \
-              --url "https://github.com/fdcibernie/${{ github.repository }}/check-runs" \
-              --header "Authorization:Bearer $GITHUB_TOKEN" \
-              --header 'Accept:application/vnd.github.v3+json' \
-              --header 'Content-Type:application/json' \
-              --data '{
-                "name":"Your status check name",
-                "head_sha":"${{ github.sha }}",
-                "status":"completed",
-                "conclusion":"${{ job.status }}",
-                "output":{
-                  "title":"Your status check title",
-                  "summary":"Your status check summary"
-                }
-              }')
-        
-            if [[ $(echo "$response" | jq -r .message) != null ]]; then
-              echo "Error setting status:$(echo "$response" | jq -r .message)"
-              exit 1
-            fi
+      - name: create-status-check
+        uses: billyjbryant/create-status-check@v2
+        with:
+          # Use secrets.GITHUB_TOKEN or your own token if you need to trigger other workflows the use "on: status"
+          authToken: ${{ secrets.GITHUB_TOKEN }}
+          # The status of the check: success, error, failure or pending
+          state: Succes
+     
 # https://github.com/fdcibernie
               # - name: create-status-check
       #   uses: unacast/actions-github-deployment-status@0.4.0
