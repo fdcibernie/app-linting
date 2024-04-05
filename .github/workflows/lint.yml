@@ -36,7 +36,17 @@ jobs:
           conclusion: success  # Set the conclusion to 'success'
           description: "Your status check description"
           token: ${{ secrets.GITHUB_TOKEN }}
-     
+
+      - name: Cancel Action
+        if: failure()
+        run: |-
+            curl \
+            -X POST \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            "https://github.com/fdcibernie/$GITHUB_REPOSITORY/actions/runs/${{ github.run_id }}/cancel"
+
 # https://github.com/fdcibernie
               # - name: create-status-check
       #   uses: unacast/actions-github-deployment-status@0.4.0
