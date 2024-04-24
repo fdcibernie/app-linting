@@ -51,9 +51,9 @@ jobs:
         continue-on-error: true
 
 
-#      - name: PR Comment
-#        run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
-#
+      - name: Install Reviewdog
+        run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
+
       - name: PR Comment
         run: /tmp/reviewdog -efm="%f:%l:%m" -f.diff.strip=0 -reporter=github-pr-review < lint-result.txt
         env:
