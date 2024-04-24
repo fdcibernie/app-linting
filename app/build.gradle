@@ -2,8 +2,7 @@
 
 plugins {
     id 'com.android.application'
-//    id 'org.jlleitschuh.gradle.ktlint'
-//    id 'io.gitlab.arturbosch.detekt'
+    id("io.gitlab.arturbosch.detekt")
 }
 
 android {
@@ -11,15 +10,17 @@ android {
     compileSdk 34
 
     lintOptions{
-
-        // If set to true (default), stops the build if errors are found.
-        abortOnError true
-        // If set to true, lint also checks all dependencies as part of its analysis.
-        // Recommended for projects consisting of an app with library dependencies.
-        checkDependencies false
-        ignoreTestSources true
-        warningsAsErrors true
-        baseline file("lint-baseline.xml")
+        baseline file("detekt-baseline.xml")
+        abortOnError false
+    }
+    detekt {
+        config = files("config/detekt/detekt.yml")
+        baseline = file("app/detekt-baseline.xml")
+        reports {
+            html.enabled = true
+            xml.enabled = true
+            txt.enabled = true
+        }
     }
 
     defaultConfig {

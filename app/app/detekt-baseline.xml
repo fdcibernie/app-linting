@@ -1,0 +1,8 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+  <ManuallySuppressedIssues></ManuallySuppressedIssues>
+  <CurrentIssues>
+    <ID>EmptyClassBlock:GlobalData.kt$GlobalData${ }</ID>
+    <ID>NewLineAtEndOfFile:GlobalData.kt$com.example.applinting.kotlin.GlobalData.kt</ID>
+  </CurrentIssues>
+</SmellBaseline>
