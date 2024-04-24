@@ -1,67 +1,33 @@
 name: Android NC Build
 on:
-  push :
-    branches : [ v2 ]
   pull_request:
-    branches : [ v2 ]
-
+    branches : [ main ]
+    types: [opened, labeled]
 
 jobs:
-  build:
-    runs-on : ubuntu-latest
+  pull_request:
+    if: ${{ github.event.label.name == 'for review' }}
+    runs-on: ubuntu-latest
     steps:
-      - name : Checkout
+      - name: Checkout
         uses: actions/checkout@v4.1.2
 
-      - name : Setup Java JDK
+      - name: Setup Java JDK
         uses: actions/setup-java@v4.2.1
         with:
           java-version: '18'
           distribution: 'adopt'
 
-#      - name: App Lint
-#        run: ./gradlew app:lintDebug
-#
-#      - name: Upload Lint Report
-#        uses: actions/upload-artifact@v4.3.1
-#        with:
-#         name: app-lint-report.html
-#         path: app/build/reports/app-lint-report.html
-          
-      - name: create-status-check
-        uses: billyjbryant/create-status-check@v2
-        with:
-          name: "Your status check name"
-          state: 'success'  # Set the status to 'success'
-          conclusion: success  # Set the conclusion to 'success'
-          description: "Your status check description"
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Gradlew Permissions
+        run: chmod +x gradlew
 
-      - name: Cancel Action
-        if: failure()
-        run: |-
-            curl \
-            -X POST \
-            -H "X-GitHub-Api-Version: 2022-11-28" \
-            -H "Accept: application/vnd.github.v3+json" \
-            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
-            "https://github.com/fdcibernie/$GITHUB_REPOSITORY/actions/runs/${{ github.run_id }}/cancel"
+      - name: Run Detekt
+        run: ./gradlew detekt > lint-result.txt
 
-# https://github.com/fdcibernie
-              # - name: create-status-check
-      #   uses: unacast/actions-github-deployment-status@0.4.0
-      #   with:
-      #     # The GITHUB_TOKEN secret
-      #     github_token: ${{ secrets.GITHUB_TOKEN }}
-      #     # The status to create. Can be one of error, failure, inactive, in_progress, queued pending, or success
-      #     status: success
-        
+      - name: Install reviewdog
+        run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
 
-#      - name : Build with Gradle
-#        run: ./gradlew assembleDebug
-#
-#      - name : Upload a Build Artifact
-#        uses: actions/upload-artifact@v4.3.1
-#        with:
-#          name: MiniProject.apk
-#          path: app/build/outputs/apk/debug/app-debug.apk
+      - name: Run reviewdog
+        run: /tmp/reviewdog -f=checkstyle -f.diff.strip=0 -reporter=github-pr-review < lint-result.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
