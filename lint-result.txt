@@ -1,0 +1,7 @@
+> Task :detekt NO-SOURCE
+
+> Task :app:detekt FAILED
+/Users/fdc-bernie-nc-android/Documents/androidproject/Spikes/AppLinting/app/src/main/java/com/example/applinting/kotlin/GlobalData.kt:3:62: The class or object GlobalData is empty. [EmptyClassBlock]
+/Users/fdc-bernie-nc-android/Documents/androidproject/Spikes/AppLinting/app/src/main/java/com/example/applinting/kotlin/GlobalData.kt:4:2: The file /Users/fdc-bernie-nc-android/Documents/androidproject/Spikes/AppLinting/app/src/main/java/com/example/applinting/kotlin/GlobalData.kt is not ending with a new line. [NewLineAtEndOfFile]
+
+1 actionable task: 1 executed

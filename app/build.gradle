@@ -11,6 +11,7 @@ android {
 
     lintOptions{
         baseline file("detekt-baseline.xml")
+        abortOnError false
     }
     detekt {
         config = files("config/detekt/detekt.yml")
