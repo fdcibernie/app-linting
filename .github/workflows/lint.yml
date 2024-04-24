@@ -23,6 +23,7 @@ jobs:
 
       - name: Run Detekt
         run: ./gradlew detekt > lint-result.txt
+        continue-on-error: true
 
       - name: Install reviewdog
         run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
