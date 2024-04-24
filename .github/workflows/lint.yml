@@ -31,4 +31,4 @@ jobs:
       - name: Run reviewdog
         run: /tmp/reviewdog -f=checkstyle -f.diff.strip=0 -reporter=github-pr-review < lint-result.txt
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
