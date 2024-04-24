@@ -25,24 +25,34 @@ jobs:
       - name: Gradlew Permissions
         run: chmod +x gradlew
 
-#      - name: Run Detekt
-#        run: ./gradlew detekt
-#        continue-on-error: true
+      - name: Run Detekt
+        run: ./gradlew detekt
+        continue-on-error: true
+
+      - name: Run Detekt
+        uses: reviewdog/action-actionlint@42de1e3a0f52d5f8b8390894de87bc603844e530 # v1
+        with:
+          fail_on_error: false
+          level: error
+          reporter: github-pr-review
+          filter_mode: file
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
 #
 #      - name: Run Danger Tool
 #        uses: danger/kotlin@1.3.0
 #        env:
 #          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
 
-      - name: Run Detekt
-        run: ./gradlew detekt > lint-result.txt
-        continue-on-error: true
+#      - name: Run Detekt
+#        run: ./gradlew detekt > lint-result.txt
+#        continue-on-error: true
 
 
-      - name: Install reviewdog
-        run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
-
-      - name: Run reviewdog
-        run: /tmp/reviewdog -f=checkstyle -f.diff.strip=0 -reporter=github-pr-review < lint-result.txt
-        env:
-          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
+#      - name: Install reviewdog
+#        run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
+#
+#      - name: Run reviewdog
+#        run: /tmp/reviewdog -f=checkstyle -f.diff.strip=0 -reporter=github-pr-review < lint-result.txt
+#        env:
+#          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
