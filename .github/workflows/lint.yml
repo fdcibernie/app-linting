@@ -2,8 +2,7 @@
 name: Android NC Build
 on:
   pull_request:
-    branches : [ main ]
-    types: [opened, labeled]
+    types: [ ready_for_review ]
 
 jobs:
   pull_request:
