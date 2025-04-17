@@ -50,14 +50,21 @@ jobs:
 
       - name: Detekt Lint
         run: ./gradlew detekt
-        continue-on-error: true
 
       - name: 🔍 Debug Detekt Report Output
         run: |
           ls -la build/reports 
 
       - name: PR Comment
-        run: /tmp/reviewdog -efm="%f:%l:%m" -f.diff.strip=0 -reporter=github-pr-review
+        #run: /tmp/reviewdog -efm="%f:%l:%m" -f.diff.strip=0 -reporter=github-pr-review
+        run: |
+          /tmp/reviewdog \
+            -f=errorformat \
+            -efm="%f:%l: %m" \
+            -name="detekt" \
+            -reporter=github-pr-review \
+            -level=warning \
+            < app/build/reports/detekt/detekt.txt
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
 
