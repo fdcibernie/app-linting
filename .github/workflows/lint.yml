@@ -60,15 +60,15 @@ jobs:
 
       - name: PR Comment
         if: failure()
-        #run: /tmp/reviewdog -efm="%f:%l:%m" -f.diff.strip=0 -reporter=github-pr-review
-        run: |
-          /tmp/reviewdog \
-            -f=errorformat \
-            -efm="%f:%l: %m" \
-            -name="detekt" \
-            -reporter=github-pr-review \
-            -level=warning \
-            < lint-result.txt
+        run: /tmp/reviewdog -efm="%f:%l:%m" -f.diff.strip=0 -reporter=github-pr-review < lint-result.txt
+#        run: |
+#          /tmp/reviewdog \
+#            -f=errorformat \
+#            -efm="%f:%l: %m" \
+#            -name="detekt" \
+#            -reporter=github-pr-review \
+#            -level=warning \
+#            < lint-result.txt
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
 
