@@ -1,0 +1,1 @@
+NewLineAtEndOfFile - [Person.kt] at /Users/fdc-bernie-nc-android/AndroidStudioProjects/app-linting/app/src/main/java/com/example/applinting/kotlin/Person.kt:5:24 - Signature=Person.kt$com.example.applinting.kotlin.Person.kt
