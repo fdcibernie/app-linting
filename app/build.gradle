@@ -22,6 +22,7 @@ android {
 //            txt.enabled = true
 //        }
     }
+
     tasks.named("detekt").configure {
         reports {
             txt.required.set(true)
