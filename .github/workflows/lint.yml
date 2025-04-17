@@ -8,12 +8,13 @@ on:
 
 jobs:
   pull_request:
-    if: ${{ github.event.label.name == 'for review' }}
+    name: Start lint checking
+    if: ${{ github.event.sender.type != 'Bot' }}
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      checks: write
-      pull-requests: write
+#    permissions:
+#      contents: read
+#      checks: write
+#      pull-requests: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.2
