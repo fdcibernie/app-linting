@@ -49,6 +49,9 @@ jobs:
       - name: Install Reviewdog
         run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
 
+      - name: Install Reviewdog
+        run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
+
       - name: Detekt Lint
         run: ./gradlew detekt
         continue-on-error: true
