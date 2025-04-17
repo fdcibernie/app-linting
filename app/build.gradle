@@ -13,21 +13,6 @@ android {
         baseline file("detekt-baseline.xml")
         abortOnError false
     }
-    detekt {
-        config.setFrom("config/detekt/detekt.yml")
-        baseline = file("app/detekt-baseline.xml")
-//        reports {
-//            html.enabled = true
-//            xml.enabled = true
-//            txt.enabled = true
-//        }
-    }
-    tasks.named("detekt").configure {
-        reports {
-            txt.required.set(true)
-            txt.outputLocation.set(file("app/build/reports/detekt/detekt.txt"))
-        }
-    }
 
     defaultConfig {
         applicationId "com.example.applinting"
@@ -53,6 +38,17 @@ android {
         exclude 'kotlin/internal/internal.kotlin_builtins'
     }
 
+}
+
+detekt {
+    config.setFrom("config/detekt/detekt.yml")
+    baseline = file("app/detekt-baseline.xml")
+}
+tasks.named("detekt").configure {
+    reports {
+        txt.required.set(true)
+        txt.outputLocation.set(file("app/build/reports/detekt/detekt.txt"))
+    }
 }
 
 dependencies {
