@@ -2,12 +2,14 @@
 name: Android NC Build
 on:
   pull_request:
-    branches : [ main ]
-    types: [opened, labeled]
+    types: [ ready_for_review ]
+  issue_comment:
+    types: [ created ]
 
 jobs:
   pull_request:
-    if: ${{ github.event.label.name == 'for review' }}
+    name: Start lint checking
+    if: ${{ github.event.sender.type != 'Bot' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -26,38 +28,48 @@ jobs:
       - name: Gradlew Permissions
         run: chmod +x gradlew
 
-#      - name: Run Detekt
-#        run: ./gradlew detekt
-#        continue-on-error: true
-#
-#      - name: PR Comment
-#        uses: reviewdog/action-actionlint@42de1e3a0f52d5f8b8390894de87bc603844e530 # v1
-#        with:
-#          actionlint_flags: -ignore 'SC2086' -ignore 'SC2129'
-#          fail_on_error: false
-#          level: error
-#          reporter: github-pr-review
-#          filter_mode: file
-#        env:
-#          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
-#
-#      - name: PR Comment
-#        uses: danger/kotlin@1.3.1
-#        env:
-#          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
+      #      - name: Run Detekt
+      #        run: ./gradlew detekt
+      #        continue-on-error: true
+      #
+      #      - name: PR Comment
+      #        uses: reviewdog/action-actionlint@42de1e3a0f52d5f8b8390894de87bc603844e530 # v1
+      #        with:
+      #          actionlint_flags: -ignore 'SC2086' -ignore 'SC2129'
+      #          fail_on_error: false
+      #          level: error
+      #          reporter: github-pr-review
+      #          filter_mode: file
+      #        env:
+      #          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
+      #
+      #      - name: PR Comment
+      #        uses: danger/kotlin@1.3.1
+      #        env:
+      #          DANGER_GITHUB_API_TOKEN: ${{ secrets.DANGER_GITHUB_API_TOKEN }}
 
       - name: Install Reviewdog
         run: wget -O - -q https://raw.githubusercontent.com/reviewdog/reviewdog/master/install.sh | sh -s -- -b /tmp
 
       - name: Detekt Lint
         run: ./gradlew detekt > lint-result.txt
-        continue-on-error: true
 
       - name: 🔍 Debug Detekt Report Output
         run: |
-          ls -la build/reports 
+          find build || echo "No build dir"
 
       - name: PR Comment
+        if: failure()
         run: /tmp/reviewdog -efm="%f:%l:%m" -f.diff.strip=0 -reporter=github-pr-review < lint-result.txt
+#        run: |
+#          /tmp/reviewdog \
+#            -f=errorformat \
+#            -efm="%f:%l: %m" \
+#            -name="detekt" \
+#            -reporter=github-pr-review \
+#            -level=warning \
+#            < lint-result.txt
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.REVIEWDOG_GITHUB_API_TOKEN }}
+
+
