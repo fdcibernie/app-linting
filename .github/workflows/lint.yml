@@ -3,6 +3,8 @@ name: Android NC Build
 on:
   pull_request:
     types: [ ready_for_review ]
+  issue_comment:
+    types: [ created ]
 
 jobs:
   pull_request:
@@ -56,6 +58,7 @@ jobs:
           ls -la build/reports 
 
       - name: PR Comment
+        if: failure()
         #run: /tmp/reviewdog -efm="%f:%l:%m" -f.diff.strip=0 -reporter=github-pr-review
         run: |
           /tmp/reviewdog \
